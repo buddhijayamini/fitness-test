@@ -152,36 +152,29 @@ class OrderController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Order $order)
+    public function dailyOrdersTbl(Request $request)
     {
-        //
-    }
+        $orders = Order::with(['customer'])
+            ->whereDate('created_at', $request->create_date)->get();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Order $order)
-    {
-        //
-    }
+        if ($request->ajax()) {
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Order $order)
-    {
-        //
-    }
+            return Datatables::of($orders)
+                ->addIndexColumn()
+                ->addColumn('customer_name', function ($row) {
+                    return $row->customer->name;
+                })
+                ->addColumn('address', function ($row) {
+                    return $row->customer->address;
+                })
+                ->addColumn('mobile', function ($row) {
+                    return $row->customer->mobile;
+                })
+                ->rawColumns(['customer_name', 'address', 'mobile'])
+                ->make(true);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
-    {
-        //
+        return view('reports/daily_sale');
     }
 
     public function dishByType($type)
