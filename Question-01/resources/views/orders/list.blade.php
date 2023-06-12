@@ -46,7 +46,7 @@
         <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="viewModalLabel">View Order</h5>
+                    <h5 class="modal-title" id="viewModalLabel">View Order - <label id="ordId"></label></h5>
                 </div>
                 <div class="modal-body">
                     <div class="row mt-2">
@@ -134,6 +134,7 @@
                 $(document).on('click', '.viewData', function () {
 
                  var id = $(this).val();
+                 $('#ordId').html('ORD00'+id);
                 $('#lstTbl').DataTable({
                     processing: true,
                     serverSide: true,
