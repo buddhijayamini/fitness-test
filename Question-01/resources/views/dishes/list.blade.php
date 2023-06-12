@@ -37,47 +37,7 @@
         </div>
     </div>
 
-    <script type="text/javascript">
-            $(document).ready(function() {
-                $('#dishTbl').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    stateSave: true,
-                    bDestroy: true,
-                    scrollX: true,
-                    ajax: {
-                        url: location.url
-                    },
-                    columnDefs: [{
-                        targets: "_all",
-                        createdCell: function(td, cellData, rowData, row, col) {
-                            $(td).css('text-align', 'center')
-                        }
-                    }],
-                    columns: [{
-                            data: 'DT_RowIndex',
-                            name: 'id',
-                            searchable: false
-                        },
-                        {
-                            data: 'type',
-                            name: 'type',
-                            visible: true
-                        },
-                        {
-                            data: 'name',
-                            name: 'name',
-                            visible: true
-                        },
-                        {
-                            data: 'price',
-                            name: 'price',
-                            visible: true
-                        }
-                    ],
-                });
-            });
-        </script>
+    <script  src="{{ url('js/dish.js') }}"></script>
 
 @endsection
 
