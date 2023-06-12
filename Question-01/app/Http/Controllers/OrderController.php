@@ -52,23 +52,21 @@ class OrderController extends Controller
                 ->make(true);
         }
 
-        if ($request->id) {
-            
-            $list =  $this->orderInterface->getListPaginated($request->id);
-            if ($request->ajax()) {
-
-                return Datatables::of($list)
-                    ->addIndexColumn()
-                    ->addColumn('dish', function ($row) {
-                        return $row->dish->type . " - " . $row->dish->name;
-                    })
-                    ->rawColumns(['dish'])
-                    ->make(true);
-            }
-        }
         return view('orders/list');
     }
 
+    public function tableLoad($id)
+    {
+        $list =  $this->orderInterface->getListPaginated($id);
+
+        return Datatables::of($list)
+            ->addIndexColumn()
+            ->addColumn('dish', function ($list) {
+                return $list->dish->type . " - " . $list->dish->name;
+            })
+            ->rawColumns(['dish'])
+            ->make(true);
+    }
     /**
      * Show the form for creating a new resource.
      */

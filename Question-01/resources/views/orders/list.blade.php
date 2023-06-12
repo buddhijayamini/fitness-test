@@ -141,10 +141,7 @@
                     bDestroy: true,
                     scrollX: true,
                     ajax: {
-                        url: location.url
-                    },
-                    data:{
-                        id: id
+                        url: "order-list/" +id,
                     },
                     columnDefs: [{
                         targets: "_all",

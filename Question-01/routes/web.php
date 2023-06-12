@@ -42,6 +42,7 @@ Route::controller(DishController::class)->group(function() {
 
 Route::controller(OrderController::class)->group(function() {
     Route::get('/order', 'index')->name('order');
+    Route::get('/order-list/{id}', 'tableLoad')->name('order-list');
     Route::get('/order-add', 'create')->name('order-add');
     Route::post('/order-save', 'store')->name('order-save');
     Route::get('/dish-by-type/{type}', 'dishByType')->name('dish-by-type');
