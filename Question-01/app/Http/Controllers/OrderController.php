@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\Dish;
 use App\Models\Order;
+use App\Models\OrderList;
 use App\Repositories\Order\OrderInterface;
 use Exception;
 use Illuminate\Http\Request;
@@ -177,7 +178,38 @@ class OrderController extends Controller
         return view('reports/daily_sale');
     }
 
-    public function dishByType($type)
+    public function famousDishTbl(Request $request)
+    {
+        $dish =  OrderList::join('dishes','order_lists.dish_id','dishes.id')
+        // with(['dish' => function ($query) {
+        //                  $query->where('type', 'Main Dishes');
+        //              }])
+                ->where('dishes.type', 'Main Dishes')
+                ->groupBy('order_lists.dish_id')
+                ->orderBy('order_lists.qty', 'desc')
+                ->get();
+
+        if ($request->ajax()) {
+
+            return Datatables::of($dish)
+                ->addIndexColumn()
+                ->addColumn('dish', function ($dish) {
+                    return $dish->name;
+                })
+                ->addColumn('price', function ($dish) {
+                    return $dish->price;
+                })
+                ->addColumn('qty', function ($dish) {
+                    return $dish->qty;
+                })
+                ->rawColumns(['dish', 'price', 'qty'])
+                ->make(true);
+        }
+
+        return view('reports/main_dish');
+    }
+
+   public function dishByType($type)
     {
         $data = Dish::where('type', $type)->get();
 

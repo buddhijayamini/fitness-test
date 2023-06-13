@@ -19,7 +19,7 @@
                                     <div class="col-4 px-0 pt-1"></div>
                                     <div class="col-8">
                                         <div class="btn-group">
-                                            <input type="date" class="form-control" id="create_date" onchange="handler(event);" value="<?php echo date('Y-m-d'); ?>" >
+                                            <input type="date" class="form-control" id="create_date" value="<?php echo date('Y-m-d'); ?>" >
                                           </div>
                                     </div>
                                 </div>

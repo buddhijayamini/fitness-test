@@ -48,5 +48,6 @@ Route::controller(OrderController::class)->group(function() {
     Route::get('/dish-by-type/{type}', 'dishByType')->name('dish-by-type');
     Route::get('/dish-by-name/{name}', 'dishByName')->name('dish-by-name');
     Route::get('/daily-orders', 'dailyOrdersTbl')->name('daily-orders');
+    Route::get('/famous-dish', 'famousDishTbl')->name('famous-dish');
 
 });
