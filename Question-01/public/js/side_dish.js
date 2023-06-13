@@ -1,13 +1,13 @@
 $(document).ready(function() {
 
-    mainTblLoad();
+    sideTblLoad();
 
 });
 
 
-function mainTblLoad(){
+function sideTblLoad(){
 
-    $('#mainTbl').DataTable({
+    $('#sideTbl').DataTable({
         processing: true,
         serverSide: true,
         stateSave: true,
@@ -18,7 +18,7 @@ function mainTblLoad(){
              'csv', 'print'
         ],
         ajax: {
-            url: 'famous-dish'
+            url: 'famous-side-dish'
         },
         columnDefs: [{
             targets: "_all",

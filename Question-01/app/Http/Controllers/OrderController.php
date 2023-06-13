@@ -209,6 +209,35 @@ class OrderController extends Controller
         return view('reports/main_dish');
     }
 
+    public function famousSideDishTbl(Request $request)
+    {
+        $dish =  OrderList::join('dishes','order_lists.dish_id','dishes.id')
+                ->where('dishes.type', 'Side Dishes')
+                ->groupBy('order_lists.dish_id')
+                ->orderBy('order_lists.qty', 'desc')
+                ->get();
+
+        if ($request->ajax()) {
+
+            return Datatables::of($dish)
+                ->addIndexColumn()
+                ->addColumn('dish', function ($dish) {
+                    return $dish->name;
+                })
+                ->addColumn('price', function ($dish) {
+                    return $dish->price;
+                })
+                ->addColumn('qty', function ($dish) {
+                    return $dish->qty;
+                })
+                ->rawColumns(['dish', 'price', 'qty'])
+                ->make(true);
+        }
+
+        return view('reports/side_dish');
+    }
+
+
    public function dishByType($type)
     {
         $data = Dish::where('type', $type)->get();

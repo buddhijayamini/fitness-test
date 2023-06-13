@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">{{ __('Most Popular Main Dish') }}</div>
+                    <div class="card-header">{{ __('Most Popular Side Dish') }}</div>
 
                     <div class="card-body">
                         @if (session('status'))
@@ -15,7 +15,7 @@
                         @endif
                         <div class="row">
                             <div class="col-md-12">
-                                <table id="mainTbl" class="table  display" style="width:100%">
+                                <table id="sideTbl" class="table  display" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th class="text-center">#</th>
@@ -36,6 +36,6 @@
         </div>
     </div>
 
-    <script  src="{{ url('js/main_dish.js') }}"></script>
+    <script  src="{{ url('js/side_dish.js') }}"></script>
 
 @endsection
