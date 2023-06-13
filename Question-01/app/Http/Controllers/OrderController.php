@@ -153,6 +153,7 @@ class OrderController extends Controller
         }
     }
 
+    //daily orders
     public function dailyOrdersTbl(Request $request)
     {
         $orders = Order::with(['customer'])
@@ -178,16 +179,17 @@ class OrderController extends Controller
         return view('reports/daily_sale');
     }
 
+    //famous main dish
     public function famousDishTbl(Request $request)
     {
-        $dish =  OrderList::join('dishes','order_lists.dish_id','dishes.id')
-        // with(['dish' => function ($query) {
-        //                  $query->where('type', 'Main Dishes');
-        //              }])
-                ->where('dishes.type', 'Main Dishes')
-                ->groupBy('order_lists.dish_id')
-                ->orderBy('order_lists.qty', 'desc')
-                ->get();
+        $dish =  OrderList::join('dishes', 'order_lists.dish_id', 'dishes.id')
+            // with(['dish' => function ($query) {
+            //                  $query->where('type', 'Main Dishes');
+            //              }])
+            ->where('dishes.type', 'Main Dishes')
+            ->groupBy('order_lists.dish_id')
+            ->orderBy('order_lists.qty', 'desc')
+            ->get();
 
         if ($request->ajax()) {
 
@@ -209,13 +211,14 @@ class OrderController extends Controller
         return view('reports/main_dish');
     }
 
+    //famous side dish
     public function famousSideDishTbl(Request $request)
     {
-        $dish =  OrderList::join('dishes','order_lists.dish_id','dishes.id')
-                ->where('dishes.type', 'Side Dishes')
-                ->groupBy('order_lists.dish_id')
-                ->orderBy('order_lists.qty', 'desc')
-                ->get();
+        $dish =  OrderList::join('dishes', 'order_lists.dish_id', 'dishes.id')
+            ->where('dishes.type', 'Side Dishes')
+            ->groupBy('order_lists.dish_id')
+            ->orderBy('order_lists.qty', 'desc')
+            ->get();
 
         if ($request->ajax()) {
 
@@ -237,8 +240,39 @@ class OrderController extends Controller
         return view('reports/side_dish');
     }
 
+    public function mainSideDishTbl(Request $request)
+    {
+        $dish =  OrderList::join('dishes', 'order_lists.dish_id', 'dishes.id')
+            ->where('dishes.type', 'Main Dishes')
+            ->orWhere('dishes.type', 'Side Dishes')
+            ->orderBy('order_lists.id', 'desc')
+            ->get();
 
-   public function dishByType($type)
+        if ($request->ajax()) {
+
+            return Datatables::of($dish)
+                ->addIndexColumn()
+                ->addColumn('dish', function ($dish) {
+                    return $dish->name;
+                })
+                ->addColumn('code', function ($dish) {
+                    $code = Order::find($dish->order_id);
+                    return $code->code;
+                })
+                ->addColumn('price', function ($dish) {
+                    return $dish->price;
+                })
+                ->addColumn('qty', function ($dish) {
+                    return $dish->qty;
+                })
+                ->rawColumns(['dish','code', 'price', 'qty'])
+                ->make(true);
+        }
+
+        return view('reports/main_side');
+    }
+
+    public function dishByType($type)
     {
         $data = Dish::where('type', $type)->get();
 
