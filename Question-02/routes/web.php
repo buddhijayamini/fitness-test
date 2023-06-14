@@ -37,6 +37,8 @@ Route::controller(PatientController::class)->group(function() {
 
 Route::controller(RecordController::class)->group(function() {
     Route::get('/record', 'index')->name('record');
+    Route::get('/record-list/{id}', 'tableLoad')->name('record-list');
+
 });
 
 Route::controller(InvoiceController::class)->group(function() {

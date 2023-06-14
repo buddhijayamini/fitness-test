@@ -22,8 +22,7 @@
                                             <th class="text-center">#</th>
                                             <th class="text-center">Name</th>
                                             <th class="text-center">Mobile</th>
-                                            <th class="text-center">Note</th>
-                                            <th class="text-center">Date</th>
+                                            <th class="text-center">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -33,6 +32,40 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="viewMdl" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewModalLabel">View Record - <label id="patientId"></label></h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row mt-2">
+                        <input type="hidden" id="idPaient" />
+                        <div class="col-md-12">
+                            <table id="listTbl" class="table  display" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">Note</th>
+                                        <th class="text-center">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

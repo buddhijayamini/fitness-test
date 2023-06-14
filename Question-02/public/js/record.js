@@ -30,15 +30,53 @@ $(document).ready(function() {
                 visible: true
             },
             {
-                data: 'note',
-                name: 'note',
+                data: 'view',
+                name: 'view',
                 visible: true
             },
-            {
-                data: 'created_at',
-                name: 'created_at',
-                visible: true
-            }
         ],
     });
+
+
+    $(document).on('click', '.viewData', function() {
+
+        var id = $(this).val();
+        $('#patientId').html(id);
+        $('#listTbl').DataTable({
+            processing: true,
+            serverSide: true,
+            stateSave: true,
+            bDestroy: true,
+            scrollX: true,
+            ajax: {
+                url: "record-list/" + id,
+            },
+            columnDefs: [{
+                targets: "_all",
+                createdCell: function(td, cellData, rowData, row, col) {
+                    $(td).css('text-align', 'center')
+                }
+            }],
+            columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'id',
+                    searchable: false
+                },
+                {
+                    data: 'note',
+                    name: 'note',
+                    visible: true
+                },
+                {
+                    data: 'created_at',
+                    name: 'created_at',
+                    visible: true
+                },
+            ],
+        });
+    });
+
+
+
+
 });

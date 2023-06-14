@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Patient;
 use App\Models\Record;
 use Illuminate\Http\Request;
 use DB;
@@ -15,26 +16,46 @@ class RecordController extends Controller
      */
     public function index(Request $request)
     {
-        $record = Record::with(['patient'])->get();
+        $record = Patient::all();
 
         if ($request->ajax()) {
 
         return Datatables::of($record)
                 ->addIndexColumn()
                 ->addColumn('name', function ($record) {
-                    return $record->patient->name;
+                    return $record->name;
                 })
                 ->addColumn('mobile', function ($record) {
-                    return $record->patient->mobile;
+                    return $record->mobile;
                 })
-                ->addColumn('created_at', function ($record) {
-                    return $record->created_at;
+                ->addColumn('view', function ($record) {
+                    $btn = '<button type="button"  class="btn btn-primary py-1 px-1 viewData" data-bs-toggle="modal"
+                    data-bs-target="#viewMdl" data-bs-toggle="dropdown"
+                    aria-expanded="false" value = "' . $record->id . '">
+                    <i class="fa fa-eye"></i></button>';
+
+                    return $btn;
                 })
-                ->rawColumns(['name','mobile','created_at'])
+                ->rawColumns(['name','mobile','view'])
                 ->make(true);
                 }
 
         return view('record/list');
+    }
+
+    public function tableLoad($id)
+    {
+        $record = Record::with(['patient' => function($query) use($id){
+                    $query->find($id);
+        }])->get();
+
+        return Datatables::of($record)
+            ->addIndexColumn()
+            ->addColumn('created_at', function ($record) {
+                return $record->created_at;
+            })
+            ->rawColumns(['created_at'])
+            ->make(true);
     }
 
     /**
