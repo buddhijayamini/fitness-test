@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Invoice;
 use App\Models\Patient;
 use App\Models\Record;
 use Illuminate\Http\Request;
 use DB;
 use DataTables;
 use Exception;
-
+use Validator;
 class RecordController extends Controller
 {
     /**
@@ -45,14 +46,21 @@ class RecordController extends Controller
 
     public function tableLoad($id)
     {
-        $record = Record::with(['patient' => function($query) use($id){
-                    $query->find($id);
-        }])->get();
+        $record = Patient::select('records.note','records.created_at')
+        ->join('records','patients.id','records.patient_id')
+            //   with(['record' => function ($query) use ($id) {
+            //         $query->where('patient_id','=', $id);
+            //     }])
+            ->where('records.patient_id', $id)
+               ->get();
 
         return Datatables::of($record)
             ->addIndexColumn()
+            // ->addColumn('note', function ($record) {
+            //     return $record->record->note;
+            // })
             ->addColumn('created_at', function ($record) {
-                return $record->created_at;
+                return ($record->created_at)->format('Y-m-d');
             })
             ->rawColumns(['created_at'])
             ->make(true);
@@ -63,7 +71,7 @@ class RecordController extends Controller
      */
     public function create()
     {
-        //
+        return view('record/create');
     }
 
     /**
@@ -71,7 +79,77 @@ class RecordController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $validator =  Validator::make($request->all(), [
+                "mobile" => "required",
+                "name" => "required",
+                "birthday" => "required",
+                "nic" => "required",
+                "record" => "required",
+                "amount" => "required",
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 500,
+                    'message' => "Validation Error"
+                ]);
+            }
+
+            $invLastId = Invoice::all()->last();
+
+            if ($invLastId == null) {
+                $invCode = 'INV' . '001';
+            } else {
+                $invCode = 'INV' . '00' . ($invLastId->id + 1);
+            }
+
+            DB::beginTransaction();
+            $data = Patient::create([
+                'mobile' => $request->mobile,
+                'name' => $request->name,
+                'birthday' => $request->birthday,
+                'nic' => $request->name,
+                'photo' => $request->photo,
+            ]);
+
+            $data1 = Record::create([
+                'patient_id' => $data->id,
+                'note' => $request->record,
+            ]);
+
+            $data2 = Invoice::create([
+                'record_id' => $data1->id,
+                'code' => $invCode,
+                'description' => $request->description,
+                'amount' => $request->amount,
+            ]);
+
+            DB::commit();
+
+            if ($data) {
+                return response()->json(
+                    [
+                        'status' => 200,
+                        'message' => "Create Record Successfully!"
+                    ],
+                );
+            } else {
+                return  response()->json(
+                    [
+                        'status' => 500,
+                        'message' => "Create Record Error"
+                    ],
+                );
+            }
+        } catch (Exception $e) {
+            return  response()->json(
+                [
+                    'status' => 500,
+                    'message' => $e
+                ],
+            );
+        }
     }
 
     /**

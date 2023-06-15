@@ -11,4 +11,8 @@ class Patient extends Model
     protected $table = 'patients';
     protected $guarded = [];
 
+    public function record()
+    {
+        return $this->hasMany(Record::class, 'id', 'record_id');
+    }
 }

@@ -22,7 +22,7 @@ Route::get('/', function () {
 });
 
 Route::controller(LoginRegisterController::class)->group(function() {
-    Route::get('/register', 'register')->name('register');
+    // Route::get('/register', 'register')->name('register');
     Route::post('/store', 'store')->name('store');
     Route::get('/login', 'login')->name('login');
     Route::post('/authenticate', 'authenticate')->name('authenticate');
@@ -38,6 +38,8 @@ Route::controller(PatientController::class)->group(function() {
 Route::controller(RecordController::class)->group(function() {
     Route::get('/record', 'index')->name('record');
     Route::get('/record-list/{id}', 'tableLoad')->name('record-list');
+    Route::get('/record-create', 'create')->name('record-create');
+    Route::post('/record-save', 'store')->name('record-save');
 
 });
 
