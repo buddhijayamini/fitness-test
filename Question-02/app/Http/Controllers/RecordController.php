@@ -81,12 +81,12 @@ class RecordController extends Controller
     {
         try {
             $validator =  Validator::make($request->all(), [
-                "mobile" => "required",
+                "mobile" => "required|numeric|digits:10",
                 "name" => "required",
                 "birthday" => "required",
                 "nic" => "required",
                 "record" => "required",
-                "amount" => "required",
+                "amount" => "required|regex:/^\d+(\.\d{1,2})?$/",
                 'photo' => 'image|mimes:png,jpg,jpeg|max:2048'
             ]);
 

@@ -48,7 +48,7 @@
                                                     class="col-md-4 col-form-label text-md-end">{{ __('Mobile') }}</label>
 
                                                 <div class="col-md-6">
-                                                    <input id="mobile" type="text"
+                                                    <input id="mobile" type="number" 
                                                         class="form-control @error('mobile') is-invalid @enderror"
                                                         name="mobile" required autocomplete="mobile" autofocus>
 
@@ -184,8 +184,8 @@
                                         class="col-md-4 col-form-label text-md-end">{{ __('Amount') }}</label>
 
                                     <div class="col-md-6">
-                                        <input id="amount" type="text"
-                                            class="form-control @error('amount') is-invalid @enderror" name="amount"
+                                        <input id="amount" type="number"
+                                            class="form-control @error('amount') is-invalid @enderror" name="amount" pattern='[0-9]+(\\.[0-9][0-9]?)?'
                                             required autocomplete="amount" autofocus>
 
                                         @error('amount')
