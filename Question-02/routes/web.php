@@ -49,5 +49,6 @@ Route::get('/', function () {
 
     Route::controller(InvoiceController::class)->group(function () {
         Route::get('/invoice', 'index')->name('invoice');
+        Route::get('/daily-revenue', 'report')->name('daily-revenue');
     });
 //});

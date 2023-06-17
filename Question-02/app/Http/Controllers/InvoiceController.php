@@ -38,50 +38,33 @@ class InvoiceController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for reports.
      */
-    public function create()
+    public function report(Request $request)
     {
-        //
+        $invoice = Invoice::with(['record'])
+                   ->whereDate('created_at', $request->create_date)
+                   ->get();
+
+        if ($request->ajax()) {
+
+        return Datatables::of($invoice)
+                ->addIndexColumn()
+                ->addColumn('name', function ($invoice) {
+                    return $invoice->record->patient->name;
+                })
+                ->addColumn('mobile', function ($invoice) {
+                    return $invoice->record->patient->mobile;
+                })
+                ->addColumn('created_at', function ($invoice) {
+                    return $invoice->created_at;
+                })
+                ->rawColumns(['name','mobile','created_at'])
+                ->make(true);
+                }
+
+        return view('report/revenue');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Invoice $invoice)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Invoice $invoice)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Invoice $invoice)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Invoice $invoice)
-    {
-        //
-    }
 }

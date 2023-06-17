@@ -4,17 +4,7 @@ $(document).ready(function() {
         soTblLoad();
     });
 
-
     soTblLoad();
-
-
-
-
-
-
-
-
-
 
 });
 
