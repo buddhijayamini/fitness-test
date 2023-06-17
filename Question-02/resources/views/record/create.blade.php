@@ -8,7 +8,8 @@
         }
     </style>
     <div>
-        <form id="addRcdFrm" method="" action="" enctype="multipart/form-data">
+        <form id="addRcdFrm" method="Post" action="" enctype="multipart/form-data">
+            @csrf
             <div class="container p-2">
                 <div class="row justify-content-center">
                     <div class="col-md-12">
@@ -24,7 +25,6 @@
 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <form id="addFrm" method="" action="">
 
                                             <div class="row mb-3">
                                                 <label for="name"
@@ -108,7 +108,6 @@
                                                     @enderror
                                                 </div>
                                             </div>
-                                        </form>
                                     </div>
                                 </div>
                             </div>

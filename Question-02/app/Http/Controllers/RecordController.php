@@ -87,6 +87,7 @@ class RecordController extends Controller
                 "nic" => "required",
                 "record" => "required",
                 "amount" => "required",
+                'photo' => 'image|mimes:png,jpg,jpeg|max:2048'
             ]);
 
             if ($validator->fails()) {
@@ -104,13 +105,17 @@ class RecordController extends Controller
                 $invCode = 'INV' . '00' . ($invLastId->id + 1);
             }
 
+            $imageName = $invCode.'.'.$request->photo->extension();
+
+            $request->photo->move(public_path('photo'), $imageName);
+
             DB::beginTransaction();
             $data = Patient::create([
                 'mobile' => $request->mobile,
                 'name' => $request->name,
                 'birthday' => $request->birthday,
                 'nic' => $request->name,
-                'photo' => $request->photo,
+                'photo' => $imageName,
             ]);
 
             $data1 = Record::create([
