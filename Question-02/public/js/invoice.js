@@ -1,32 +1,12 @@
 $(document).ready(function() {
-
-    $("#create_date").change(function () {
-        soTblLoad();
-    });
-
-    soTblLoad();
-
-});
-
-
-function soTblLoad(){
-    var create_date = $("#create_date").val();
-
-    $('#dailyTbl').DataTable({
+    $('#invoiceTbl').DataTable({
         processing: true,
         serverSide: true,
         stateSave: true,
         bDestroy: true,
         scrollX: true,
-        dom: 'Bfrtip',
-        buttons: [
-             'csv', 'print'
-        ],
         ajax: {
-            url: 'daily-orders',
-            data:{
-                create_date: create_date,
-            },
+            url: location.url
         },
         columnDefs: [{
             targets: "_all",
@@ -45,8 +25,8 @@ function soTblLoad(){
                 visible: true
             },
             {
-                data: 'customer_name',
-                name: 'customer_name',
+                data: 'name',
+                name: 'name',
                 visible: true
             },
             {
@@ -55,15 +35,20 @@ function soTblLoad(){
                 visible: true
             },
             {
-                data: 'address',
-                name: 'address',
+                data: 'description',
+                name: 'description',
                 visible: true
             },
             {
-                data: 'total',
-                name: 'total',
+                data: 'amount',
+                name: 'amount',
                 visible: true
             },
+            {
+                data: 'created_at',
+                name: 'created_at',
+                visible: true
+            }
         ],
     });
-}
+});
