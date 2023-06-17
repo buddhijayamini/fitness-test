@@ -48,7 +48,7 @@
                                                     class="col-md-4 col-form-label text-md-end">{{ __('Mobile') }}</label>
 
                                                 <div class="col-md-6">
-                                                    <input id="mobile" type="number" 
+                                                    <input id="mobile" type="number"
                                                         class="form-control @error('mobile') is-invalid @enderror"
                                                         name="mobile" required autocomplete="mobile" autofocus>
 
@@ -201,7 +201,7 @@
                 </div>
             </div>
 
-            <button type="button" id="btnSave" class="btn btn-primary" style="float: right">Add Bill</button>
+            <button type="button" id="btnSave" class="btn btn-primary" style="float: right">Add Record</button>
         </form>
     </div>
 

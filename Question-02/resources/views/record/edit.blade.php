@@ -74,7 +74,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6 table-responsive">
-                                        <table class="table table-striped table-bordered table-scroll" width="100%" style="height: 20px !important"  cellspacing="0">
+                                        <table class="table table-striped table-bordered table-scroll" width="100%" cellspacing="0">
                                             {{-- style="height: 250px; overflow-y: auto;display:block !important" --}}
                                             <thead>
                                                 <tr>
@@ -184,7 +184,7 @@
                 </div>
             </div>
 
-            <button type="button" id="btnEdit" class="btn btn-primary" style="float: right">Add Bill</button>
+            <button type="button" id="btnEdit" class="btn btn-primary" style="float: right">Add Record</button>
         </form>
     </div>
 
