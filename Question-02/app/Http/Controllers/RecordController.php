@@ -33,7 +33,9 @@ class RecordController extends Controller
                     $btn = '<button type="button"  class="btn btn-primary py-1 px-1 viewData" data-bs-toggle="modal"
                     data-bs-target="#viewMdl" data-bs-toggle="dropdown"
                     aria-expanded="false" value = "' . $record->id . '">
-                    <i class="fa fa-eye"></i></button>';
+                    <i class="fa fa-eye"></i></button>
+                    <a href="record-edit/' . $record->id . '" target="_blank"  class="btn btn-primary py-1 px-1 editData"">
+                    <i class="fa fa-edit"></i></a>';
 
                     return $btn;
                 })
@@ -168,17 +170,75 @@ class RecordController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Record $record)
+    public function edit($id)
     {
-        //
+        $data = Patient::find($id);
+        $records = Record::where('patient_id',$id)->get();
+
+        return view('record/edit', compact(['data','records']));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Record $record)
+    public function update(Request $request)
     {
-        //
+        try {
+            $validator =  Validator::make($request->all(), [
+                "descriptionEdit" => "required",
+                "recordEdit" => "required",
+                "amountEdit" => "required|regex:/^\d+(\.\d{1,2})?$/",
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 500,
+                    'message' => "Validation Error"
+                ]);
+            }
+
+            $invLastId = Invoice::all()->last();
+            $invCode = 'INV' . '00' . ($invLastId->id + 1);
+
+            DB::beginTransaction();
+
+            $data = Record::create([
+                'patient_id' => $request->id,
+                'note' => $request->recordEdit,
+            ]);
+
+            $data2 = Invoice::create([
+                'record_id' => $data->id,
+                'code' => $invCode,
+                'description' => $request->descriptionEdit,
+                'amount' => $request->amountEdit,
+            ]);
+
+            DB::commit();
+
+            if ($data) {
+                return response()->json(
+                    [
+                        'status' => 200,
+                        'message' => "Create Record Successfully!"
+                    ],
+                );
+            } else {
+                return  response()->json(
+                    [
+                        'status' => 500,
+                        'message' => "Create Record Error"
+                    ],
+                );
+            }
+        } catch (Exception $e) {
+            return  response()->json(
+                [
+                    'status' => 500,
+                    'message' => $e
+                ],
+            );
+        }
     }
 
     /**

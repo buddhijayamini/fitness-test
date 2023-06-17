@@ -42,6 +42,9 @@ Route::get('/', function () {
         Route::get('/record-list/{id}', 'tableLoad')->name('record-list');
         Route::get('/record-create', 'create')->name('record-create');
         Route::post('/record-save', 'store')->name('record-save');
+        Route::get('/record-edit/{id}', 'edit')->name('record-edit');
+        Route::post('/record-update', 'update')->name('record-update');
+
     });
 
     Route::controller(InvoiceController::class)->group(function () {

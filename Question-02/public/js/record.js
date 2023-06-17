@@ -138,4 +138,51 @@ $(document).ready(function () {
 
     });
 
+     // edit btn
+     $("#btnEdit").click(function (e) {
+        e.preventDefault();
+
+        var id = $('#idPatient').val();
+        var record = $("#recordEdit").val();
+        var description = $("#descriptionEdit").val();
+        var amount = $("#amountEdit").val();
+
+        $.ajax({
+            type: "POST",
+            url: "/record-update",
+            headers: {
+                "X-CSRF-Token": $('meta[name="csrf-token"]').attr(
+                    "content"
+                ),
+            },
+            data:
+            {
+                "id":id,
+                "recordEdit":record,
+                "descriptionEdit":description,
+                "amountEdit":amount,
+            },
+            success: function (json) {
+                if (json.status == 500) {
+                    Swal.fire("Error", json.message, "error");
+                    $("#editRcdFrm").trigger("reset");
+
+                } else if (json.status == 200) {
+                    Swal.fire("Succuss", json.message, "success");
+                    $("#editRcdFrm").trigger("reset");
+                    location.reload();
+                }
+            },
+            error: function (xhr) {
+                Swal.fire(
+                    "Error",
+                    "Error",
+                    "error"
+                );
+                $("#editRcdFrm").trigger("reset");
+            },
+        });
+
+    });
+
 });
