@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 18, 2023 at 01:47 PM
+-- Generation Time: Jun 18, 2023 at 07:32 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -36,6 +36,13 @@ CREATE TABLE `customers` (
   `status` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `customers`
+--
+
+INSERT INTO `customers` (`id`, `name`, `email`, `mobile`, `address`, `status`) VALUES
+(1, 'nimal', 'nimal@gmail.com', '0778956412', 'Colombo 04', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -43,10 +50,36 @@ CREATE TABLE `customers` (
 --
 
 CREATE TABLE `invoices` (
-  `id` int(11) NOT NULL,
-  `customers_id` int(11) NOT NULL,
-  `orders_id` int(11) NOT NULL
+  `id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `invoices`
+--
+
+INSERT INTO `invoices` (`id`) VALUES
+(1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `invoice_lists`
+--
+
+CREATE TABLE `invoice_lists` (
+  `id` int(11) NOT NULL,
+  `orders_id` int(11) NOT NULL,
+  `invoices_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `invoice_lists`
+--
+
+INSERT INTO `invoice_lists` (`id`, `orders_id`, `invoices_id`) VALUES
+(1, 1, 1),
+(2, 2, 1),
+(3, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -61,6 +94,15 @@ CREATE TABLE `items` (
   `resturants_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `items`
+--
+
+INSERT INTO `items` (`id`, `title`, `price`, `resturants_id`) VALUES
+(1, 'food 01', 200, 1),
+(2, 'food 02', 500, 2),
+(3, 'food 03', 750, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -70,9 +112,17 @@ CREATE TABLE `items` (
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
   `items_id` int(11) NOT NULL,
-  `resturants_id` int(11) NOT NULL,
   `customers_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `items_id`, `customers_id`) VALUES
+(1, 1, 1),
+(2, 2, 1),
+(3, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -84,6 +134,14 @@ CREATE TABLE `resturants` (
   `id` int(11) NOT NULL,
   `title` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `resturants`
+--
+
+INSERT INTO `resturants` (`id`, `title`) VALUES
+(1, 'rest 01'),
+(2, 'rest 02');
 
 --
 -- Indexes for dumped tables
@@ -100,9 +158,15 @@ ALTER TABLE `customers`
 -- Indexes for table `invoices`
 --
 ALTER TABLE `invoices`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `invoice_lists`
+--
+ALTER TABLE `invoice_lists`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_invoices_customers1_idx` (`customers_id`),
-  ADD KEY `fk_invoices_orders1_idx` (`orders_id`);
+  ADD KEY `fk_invoice_lists_orders1_idx` (`orders_id`),
+  ADD KEY `fk_invoice_lists_invoices1_idx` (`invoices_id`);
 
 --
 -- Indexes for table `items`
@@ -117,7 +181,6 @@ ALTER TABLE `items`
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_orders_items1_idx` (`items_id`),
-  ADD KEY `fk_orders_resturants1_idx` (`resturants_id`),
   ADD KEY `fk_orders_customers1_idx` (`customers_id`);
 
 --
@@ -134,42 +197,48 @@ ALTER TABLE `resturants`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `invoices`
 --
 ALTER TABLE `invoices`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `invoice_lists`
+--
+ALTER TABLE `invoice_lists`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `resturants`
 --
 ALTER TABLE `resturants`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `invoices`
+-- Constraints for table `invoice_lists`
 --
-ALTER TABLE `invoices`
-  ADD CONSTRAINT `fk_invoices_customers1` FOREIGN KEY (`customers_id`) REFERENCES `customers` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_invoices_orders1` FOREIGN KEY (`orders_id`) REFERENCES `orders` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `invoice_lists`
+  ADD CONSTRAINT `fk_invoice_lists_invoices1` FOREIGN KEY (`invoices_id`) REFERENCES `invoices` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_invoice_lists_orders1` FOREIGN KEY (`orders_id`) REFERENCES `orders` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `items`
@@ -182,8 +251,7 @@ ALTER TABLE `items`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `fk_orders_customers1` FOREIGN KEY (`customers_id`) REFERENCES `customers` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_orders_items1` FOREIGN KEY (`items_id`) REFERENCES `items` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_orders_resturants1` FOREIGN KEY (`resturants_id`) REFERENCES `resturants` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_orders_items1` FOREIGN KEY (`items_id`) REFERENCES `items` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
